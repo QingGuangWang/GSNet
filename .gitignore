@@ -1,0 +1,68 @@
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+[Bb]in/
+[Oo]bj/
+
+# Build results
+[Dd]ebug/
+[Rr]elease*/
+x64/
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+.builds
+
+# Logs
+[Ll]ogs/
+internal-nlog.txt
+
+
+#Ignore thumbnails created by windows
+Thumbs.db
+ 
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+#ReSharper Files
+_ReSharper*/
+
+#Git Mergetool
+*.orig
+ 
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+
+# Generated files
+project.lock.json
+.vs/
+.dotnet/
+.idea/
+
+# NuGet packages files 
+nupkg/*.nupkg
+nupkg/*.snupkg
+nupkg/push.bat
+nupkg/push.ps1
+*.nupkg
+
+# Other
+UpgradeLog.htm

@@ -1,0 +1,9 @@
+###############################################################################
+# Set default behavior to automatically normalize line endings.
+# This will treat all files as text files and convert to OS's line ending on checkout and back to LF on commit automatically.
+###############################################################################
+* text=auto
+
+# Force shell scripts to always use LF line endings
+*.sh text eol=lf
+
