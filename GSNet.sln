@@ -3,12 +3,39 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6C1BC63D-43B9-42D7-96E2-C0AD5840D8F5}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		NuGet.config = NuGet.config
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{2803B780-7AD4-4042-9A94-7073F7F69B0F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{392995CF-2EEE-4418-81F8-F4DE0AD8355A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.Common", "src\GSNet.Common\GSNet.Common.csproj", "{217E53BF-BD36-4BDB-B2D8-B3F5800EB22F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{217E53BF-BD36-4BDB-B2D8-B3F5800EB22F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{217E53BF-BD36-4BDB-B2D8-B3F5800EB22F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{217E53BF-BD36-4BDB-B2D8-B3F5800EB22F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{217E53BF-BD36-4BDB-B2D8-B3F5800EB22F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{392995CF-2EEE-4418-81F8-F4DE0AD8355A} = {2803B780-7AD4-4042-9A94-7073F7F69B0F}
+		{217E53BF-BD36-4BDB-B2D8-B3F5800EB22F} = {392995CF-2EEE-4418-81F8-F4DE0AD8355A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E2660B47-D99F-4A5A-B728-EDFDD7E934F5}
 	EndGlobalSection
 EndGlobal
