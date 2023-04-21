@@ -52,7 +52,7 @@ namespace GSNet.Json.SystemTextJson
         /// <param name="jsonString">JSON字符串</param>
         /// <typeparam name="T">反序列化的类型</typeparam>
         /// <returns>反序列化出的对象</returns>
-        public T DeserializeObject<T>(string jsonString)
+        public T Deserialize<T>(string jsonString)
         {
             return JsonSerializer.Deserialize<T>(jsonString, _jsonSerializerOptions);
         }
@@ -63,13 +63,13 @@ namespace GSNet.Json.SystemTextJson
         /// <param name="type">反序列化的类型</param>
         /// <param name="stream">Stream流</param>
         /// <returns>反序列化出的对象</returns>
-        public object DeserializeFromStream(Type type, Stream stream)
+        public object Deserialize(Type type, Stream stream)
         {
             using var reader = new StreamReader(stream);
 
             string jsonString = reader.ReadToEnd();
 
-            return DeserializeFromString(type, jsonString);
+            return Deserialize(type, jsonString);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace GSNet.Json.SystemTextJson
         /// <param name="jsonString">JSON字符串</param>
         /// <param name="type">数据类型</param>
         /// <returns>反序列化出的对象</returns>
-        public object DeserializeFromString(Type type, string jsonString)
+        public object Deserialize(Type type, string jsonString)
         {
             return JsonSerializer.Deserialize(jsonString, type, _jsonSerializerOptions);
         }
@@ -105,7 +105,7 @@ namespace GSNet.Json.SystemTextJson
         {
             using var jsonWriter = new Utf8JsonWriter(stream);
 
-            JsonSerializer.Serialize(jsonWriter, obj, _jsonSerializerOptions);
+            JsonSerializer.Serialize(jsonWriter, obj, type, _jsonSerializerOptions);
         }
     }
 }
