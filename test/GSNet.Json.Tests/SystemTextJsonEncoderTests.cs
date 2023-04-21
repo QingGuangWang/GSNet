@@ -1,4 +1,4 @@
-﻿using GSNet.Json.SystemTextJson;
+using GSNet.Json.SystemTextJson;
 using System;
 using System.Collections.Generic;
 using System.Linq;

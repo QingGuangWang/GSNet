@@ -8,7 +8,7 @@ using GSNet.Common.Extensions;
 namespace GSNet.Json.Tests
 {
     /// <summary>
-    /// ²âÊÔSystemTextJsonConverter
+    /// æµ‹è¯•SystemTextJsonConverter
     /// </summary>
     public class SystemTextJsonConverterTests
     {
@@ -17,18 +17,18 @@ namespace GSNet.Json.Tests
         private readonly IJsonConverter _jsonConverter;
 
         /// <summary>
-        /// ĞèÒªĞòÁĞ»¯µÄ¶ÔÏó
+        /// éœ€è¦åºåˆ—åŒ–çš„å¯¹è±¡
         /// </summary>
         private readonly Person _person= new Person()
         {
-            ZhName = "°®µÂ»ª*Íõ",
+            ZhName = "çˆ±å¾·å*ç‹",
             EnName = "Edward Wang",
             Age = 18,
-            Remark = "ÎÒÊÇÒ»¸öÑ§Éú"
+            Remark = "æˆ‘æ˜¯ä¸€ä¸ªå­¦ç”Ÿ"
         };
 
         /// <summary>
-        /// Ô¤ÆÚµÄJSON×Ö·û´®
+        /// é¢„æœŸçš„JSONå­—ç¬¦ä¸²
         /// </summary>
         private const string ExpectedJsonStr = "{\"ZhName\":\"\\u7231\\u5FB7\\u534E*\\u738B\",\"EnName\":\"Edward Wang\"," +
                                                "\"Age\":18,\"Remark\":\"\\u6211\\u662F\\u4E00\\u4E2A\\u5B66\\u751F\"}";
@@ -40,7 +40,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// ²âÊÔ <see cref="IJsonConverter.Serialize{T}"/> ·½·¨
+        /// æµ‹è¯• <see cref="IJsonConverter.Serialize{T}"/> æ–¹æ³•
         /// </summary>
         [Fact]
         public void Test_Serialize()
@@ -52,7 +52,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// ²âÊÔ <see cref="IJsonConverter.SerializeObject"/> ·½·¨
+        /// æµ‹è¯• <see cref="IJsonConverter.SerializeObject"/> æ–¹æ³•
         /// </summary>
         [Fact]
         public void Test_SerializeObject()
@@ -64,7 +64,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// ²âÊÔ <see cref="IJsonConverter.SerializeToStream(Object,Stream)"/> ·½·¨
+        /// æµ‹è¯• <see cref="IJsonConverter.SerializeToStream(Object,Stream)"/> æ–¹æ³•
         /// </summary>
         [Fact]
         public void Test_SerializeToStream()
@@ -81,7 +81,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// ²âÊÔ <see cref="IJsonConverter.SerializeToStream(Type,Object,Stream)"/> ·½·¨
+        /// æµ‹è¯• <see cref="IJsonConverter.SerializeToStream(Type,Object,Stream)"/> æ–¹æ³•
         /// </summary>
         [Fact]
         public void Test_SerializeToStream_Specific_Type()
@@ -98,7 +98,7 @@ namespace GSNet.Json.Tests
         }
         
         /// <summary>
-        /// ²âÊÔ <see cref="IJsonConverter.Deserialize{T}"/> ·½·¨
+        /// æµ‹è¯• <see cref="IJsonConverter.Deserialize{T}"/> æ–¹æ³•
         /// </summary>
         [Fact]
         public void Test_Deserialize()
@@ -113,7 +113,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// ²âÊÔ <see cref="IJsonConverter.Deserialize(System.Type,string)"/> ·½·¨
+        /// æµ‹è¯• <see cref="IJsonConverter.Deserialize(System.Type,string)"/> æ–¹æ³•
         /// </summary>
         [Fact] public void Test_Deserialize_Specific_Type()
         {
@@ -131,7 +131,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// ²âÊÔ <see cref="IJsonConverter.Deserialize(System.Type,Stream)"/> ·½·¨
+        /// æµ‹è¯• <see cref="IJsonConverter.Deserialize(System.Type,Stream)"/> æ–¹æ³•
         /// </summary>
         [Fact]
         public void Test_Deserialize_Specific_Type_From_Stream()
