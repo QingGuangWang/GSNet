@@ -14,7 +14,7 @@ namespace GSNet.Json.Tests
     {
         private readonly ITestOutputHelper _outputHelper;
 
-        private readonly IJsonConverter _jsonConverter;
+        private readonly IJsonSerializer _jsonSerializer;
 
         /// <summary>
         /// 需要序列化的对象
@@ -36,42 +36,42 @@ namespace GSNet.Json.Tests
         public SystemTextJsonConverterTests(ITestOutputHelper outputHelper)
         {
             _outputHelper = outputHelper;
-            _jsonConverter = new SystemTextJsonConverter(new JsonSerializerOptions());
+            _jsonSerializer = new SystemTextJsonSerializer(new JsonSerializerOptions());
         }
 
         /// <summary>
-        /// 测试 <see cref="IJsonConverter.Serialize{T}"/> 方法
+        /// 测试 <see cref="IJsonSerializer.Serialize{T}"/> 方法
         /// </summary>
         [Fact]
         public void Test_Serialize()
         {
-            var jsonStr = _jsonConverter.Serialize(_person);
+            var jsonStr = _jsonSerializer.Serialize(_person);
 
             Assert.NotEmpty(jsonStr);
             Assert.Equal(ExpectedJsonStr, jsonStr);
         }
 
         /// <summary>
-        /// 测试 <see cref="IJsonConverter.SerializeObject"/> 方法
+        /// 测试 <see cref="IJsonSerializer.SerializeObject"/> 方法
         /// </summary>
         [Fact]
         public void Test_SerializeObject()
         {
-            var jsonStr = _jsonConverter.SerializeObject(_person);
+            var jsonStr = _jsonSerializer.SerializeObject(_person);
             
             Assert.NotEmpty(jsonStr);
             Assert.Equal(ExpectedJsonStr, jsonStr);
         }
 
         /// <summary>
-        /// 测试 <see cref="IJsonConverter.SerializeToStream(Object,Stream)"/> 方法
+        /// 测试 <see cref="IJsonSerializer.SerializeToStream(Object,Stream)"/> 方法
         /// </summary>
         [Fact]
         public void Test_SerializeToStream()
         {
             var memoryStream = new MemoryStream(); 
             
-            _jsonConverter.SerializeToStream(_person, memoryStream);
+            _jsonSerializer.SerializeToStream(_person, memoryStream);
 
             var bytes = memoryStream.ToArray();
             var jsonStr = Encoding.UTF8.GetString(bytes);
@@ -81,14 +81,14 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// 测试 <see cref="IJsonConverter.SerializeToStream(Type,Object,Stream)"/> 方法
+        /// 测试 <see cref="IJsonSerializer.SerializeToStream(Type,Object,Stream)"/> 方法
         /// </summary>
         [Fact]
         public void Test_SerializeToStream_Specific_Type()
         {
             var memoryStream = new MemoryStream();
 
-            _jsonConverter.SerializeToStream(typeof(Person), _person, memoryStream);
+            _jsonSerializer.SerializeToStream(typeof(Person), _person, memoryStream);
 
             var bytes = memoryStream.ToArray();
             var jsonStr = Encoding.UTF8.GetString(bytes);
@@ -98,12 +98,12 @@ namespace GSNet.Json.Tests
         }
         
         /// <summary>
-        /// 测试 <see cref="IJsonConverter.Deserialize{T}"/> 方法
+        /// 测试 <see cref="IJsonSerializer.Deserialize{T}"/> 方法
         /// </summary>
         [Fact]
         public void Test_Deserialize()
         {
-            var person = _jsonConverter.Deserialize<Person>(ExpectedJsonStr);
+            var person = _jsonSerializer.Deserialize<Person>(ExpectedJsonStr);
 
             Assert.NotNull(person);
             Assert.Equal(_person.EnName, person.EnName);
@@ -113,11 +113,11 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// 测试 <see cref="IJsonConverter.Deserialize(System.Type,string)"/> 方法
+        /// 测试 <see cref="IJsonSerializer.Deserialize(System.Type,string)"/> 方法
         /// </summary>
         [Fact] public void Test_Deserialize_Specific_Type()
         {
-            var obj = _jsonConverter.Deserialize(typeof(Person), ExpectedJsonStr);
+            var obj = _jsonSerializer.Deserialize(typeof(Person), ExpectedJsonStr);
 
             Assert.NotNull(obj);
             Assert.True(obj is Person);
@@ -131,14 +131,14 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// 测试 <see cref="IJsonConverter.Deserialize(System.Type,Stream)"/> 方法
+        /// 测试 <see cref="IJsonSerializer.Deserialize(System.Type,Stream)"/> 方法
         /// </summary>
         [Fact]
         public void Test_Deserialize_Specific_Type_From_Stream()
         {
             var memoryStream = new MemoryStream(ExpectedJsonStr.GetBytes());
 
-            var obj = _jsonConverter.Deserialize(typeof(Person), memoryStream);
+            var obj = _jsonSerializer.Deserialize(typeof(Person), memoryStream);
 
             Assert.NotNull(obj);
             Assert.True(obj is Person);

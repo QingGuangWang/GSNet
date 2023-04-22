@@ -38,7 +38,7 @@ namespace GSNet.Json.Tests
             };
 
             //不配置 Encoder
-            var converter = new SystemTextJsonConverter(new JsonSerializerOptions());
+            var converter = new SystemTextJsonSerializer(new JsonSerializerOptions());
 
             // {"Symbol":"\u4F60\u597D\uFF1A!@#$%^\u0026*()_\u002B\uFF01@#\uFFE5%\u2026\u2026\u0026*\uFF08\uFF09\u3001~"}
             var jsonString = converter.SerializeObject(obj);
@@ -64,7 +64,7 @@ namespace GSNet.Json.Tests
             };
 
             // 配置 Encoder
-            var converter = new SystemTextJsonConverter(new JsonSerializerOptions()
+            var converter = new SystemTextJsonSerializer(new JsonSerializerOptions()
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All),
             });
@@ -93,7 +93,7 @@ namespace GSNet.Json.Tests
             };
 
             // 配置 Encoder
-            var converter = new SystemTextJsonConverter(new JsonSerializerOptions()
+            var converter = new SystemTextJsonSerializer(new JsonSerializerOptions()
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });

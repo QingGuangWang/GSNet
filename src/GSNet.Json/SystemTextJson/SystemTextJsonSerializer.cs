@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 namespace GSNet.Json.SystemTextJson
 {
     /// <summary>
-    /// 基于.net core 3.0后微软官方出的新JSON类库 System.Text.Json 实现 IJsonConverter
+    /// 基于.net core 3.0后微软官方出的新JSON类库 System.Text.Json 实现 IJsonSerializer
     /// System.Text.Json 相对轻量级，有些复杂序列化情况支持程度没有那么强，需要额外编写自定义转换器等方式实现。
     /// 与Newtonsoft.Json相比较可以查看官方说明:  https://learn.microsoft.com/zh-cn/dotnet/standard/serialization/system-text-json/migrate-from-newtonsoft?pivots=dotnet-7-0&WT.mc_id=DT-MVP-5003918
     /// </summary>
-    public class SystemTextJsonConverter : IJsonConverter
+    public class SystemTextJsonSerializer : IJsonSerializer
     {
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-        public SystemTextJsonConverter()
+        public SystemTextJsonSerializer()
         {
             _jsonSerializerOptions = JsonSerializerOptionsHelper.CreateDefaultJsonSerializerOptions();
         }
 
-        public SystemTextJsonConverter(JsonSerializerOptions jsonSerializerOptions)
+        public SystemTextJsonSerializer(JsonSerializerOptions jsonSerializerOptions)
         {
             _jsonSerializerOptions = jsonSerializerOptions ?? JsonSerializerOptionsHelper.CreateDefaultJsonSerializerOptions();
         }
