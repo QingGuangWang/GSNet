@@ -1,9 +1,9 @@
 ﻿namespace GSNet.Json
 {
     /// <summary>
-    /// JSON序列化/反序列化 转换器
+    /// JSON序列化/反序列化器 
     /// </summary>
-    public interface IJsonConverter
+    public interface IJsonSerializer
     {
         /// <summary>
         /// 序列化对象成JSON字符串

@@ -3,9 +3,9 @@
 namespace GSNet.Json.NewtonsoftJson
 {
     /// <summary>
-    ///  基于微软官方的JSON类库 Newtonsoft.Json / Json.Net 实现 IJsonConverter
+    ///  基于微软官方的JSON类库 Newtonsoft.Json / Json.Net 实现 IJsonSerializer
     /// </summary>
-    public class NewtonsoftJsonConverter : IJsonConverter
+    public class NewtonsoftJsonSerializer : IJsonSerializer
     {
         /// <summary>
         /// 序列化配置
@@ -14,7 +14,7 @@ namespace GSNet.Json.NewtonsoftJson
 
         /// <summary>
         /// </summary>
-        public NewtonsoftJsonConverter()
+        public NewtonsoftJsonSerializer()
         {
         }
 
@@ -22,7 +22,7 @@ namespace GSNet.Json.NewtonsoftJson
         /// 基于指定的序列化配置构建
         /// </summary>
         /// <param name="serializerSettings">序列化配置</param>
-        public NewtonsoftJsonConverter(JsonSerializerSettings serializerSettings)
+        public NewtonsoftJsonSerializer(JsonSerializerSettings serializerSettings)
         {
             SerializerSettings = serializerSettings;
         }
