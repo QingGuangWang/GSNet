@@ -58,6 +58,29 @@ namespace GSNet.Json.SystemTextJson.Modifiers
         }
 
         /// <summary>
+        /// 配置在序列化/反序列化的类型（<paramref name="type"/>）的时候，其需要忽略的属性
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="propertyName">属性名称</param>
+        /// <returns></returns>
+        public IgnorePropertiesModifier AddIgnoreProperty(Type type, string propertyName)
+        {
+            if (_typeIgnorePropertiesDict.TryGetValue(type, out var propertyList))
+            {
+                if (!propertyList.Contains(propertyName))
+                {
+                    propertyList.Add(propertyName);
+                }
+            }
+            else
+            {
+                _typeIgnorePropertiesDict.Add(type, new List<string>() { propertyName });
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// 通过lambdaExpression获取属性PropertyInfo
         /// </summary>
         private PropertyInfo GetPropertyInfo<TDestination>(Expression<Func<TDestination, object>> destinationMemberLambdaExpression)
