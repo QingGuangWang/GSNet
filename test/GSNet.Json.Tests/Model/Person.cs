@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GSNet.Json.Tests.Model.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,11 @@ namespace GSNet.Json.Tests.Model
         /// 年龄
         /// </summary>
         public int Age { get; set; }
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public Gender Gender { get; set; }
 
         /// <summary>
         /// 备注

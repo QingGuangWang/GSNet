@@ -4,6 +4,7 @@ using GSNet.Json.Tests.Model;
 using Xunit.Abstractions;
 using System.Text;
 using GSNet.Common.Extensions;
+using GSNet.Json.Tests.Model.Enums;
 
 namespace GSNet.Json.Tests
 {
@@ -24,6 +25,7 @@ namespace GSNet.Json.Tests
             ZhName = "爱德华*王",
             EnName = "Edward Wang",
             Age = 18,
+            Gender = Gender.Male,
             Remark = "我是一个学生"
         };
 
@@ -31,7 +33,7 @@ namespace GSNet.Json.Tests
         /// 预期的JSON字符串
         /// </summary>
         private const string ExpectedJsonStr = "{\"ZhName\":\"\\u7231\\u5FB7\\u534E*\\u738B\",\"EnName\":\"Edward Wang\"," +
-                                               "\"Age\":18,\"Remark\":\"\\u6211\\u662F\\u4E00\\u4E2A\\u5B66\\u751F\"}";
+                                               "\"Age\":18,\"Gender\":0,\"Remark\":\"\\u6211\\u662F\\u4E00\\u4E2A\\u5B66\\u751F\"}";
 
         public SystemTextJsonConverterTests(ITestOutputHelper outputHelper)
         {

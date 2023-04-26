@@ -27,7 +27,7 @@ namespace GSNet.Json.SystemTextJson.Modifiers
                 foreach (var ignorePropertyName in ignoreProperties)
                 {
                     var propertyInfo = jsonTypeInfo.Properties.FirstOrDefault(x => x.Name == ignorePropertyName);
-
+                    
                     if (propertyInfo != null)
                     {
                         jsonTypeInfo.Properties.Remove(propertyInfo);

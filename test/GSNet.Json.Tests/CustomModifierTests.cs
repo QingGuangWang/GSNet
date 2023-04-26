@@ -11,6 +11,8 @@ using Xunit.Abstractions;
 using GSNet.Json.Tests.Model;
 using Newtonsoft.Json;
 using GSNet.Json.SystemTextJson.Modifiers;
+using GSNet.Json.Tests.Model.Enums;
+using System.Text.Json.Serialization;
 
 namespace GSNet.Json.Tests
 {
@@ -37,6 +39,7 @@ namespace GSNet.Json.Tests
                 ZhName = "爱德华*王",
                 EnName = "Edward Wang",
                 Age = 18,
+                Gender = Gender.Male,
                 Remark = "我是一个学生"
             };
             
@@ -50,6 +53,8 @@ namespace GSNet.Json.Tests
                         new IgnorePropertiesModifier()
                             //忽略备注
                             .AddIgnoreProperty<Person>(x => x.Remark)
+                            //忽略性别
+                            .AddIgnoreProperty(typeof(Person), nameof(Person.Gender))
                             .ModifyJsonTypeInfo
                     }
                 }
@@ -59,11 +64,12 @@ namespace GSNet.Json.Tests
 
             Assert.NotEmpty(jsonStr);
             Assert.DoesNotContain("Remark", jsonStr);
+            Assert.DoesNotContain("Gender", jsonStr);
 
             _outputHelper.WriteLine($"JSON:{jsonStr}");
 
             var jsonStr2 = "{\"ZhName\":\"\\u7231\\u5FB7\\u534E*\\u738B\",\"EnName\":\"Edward Wang\"," +
-                           "\"Age\":18,\"Remark\":\"\\u6211\\u662F\\u4E00\\u4E2A\\u5B66\\u751F\"}";
+                           "\"Age\":18,\"Gender\":0,\"Remark\":\"\\u6211\\u662F\\u4E00\\u4E2A\\u5B66\\u751F\"}";
             var personFromJson = serializer.Deserialize<Person>(jsonStr2);
 
             Assert.NotNull(personFromJson);
@@ -81,6 +87,7 @@ namespace GSNet.Json.Tests
                 ZhName = "爱德华*王",
                 EnName = "Edward Wang",
                 Age = 20,
+                Gender = Gender.Male,
                 Remark = "我是一个学生"
             };
 
@@ -130,7 +137,7 @@ namespace GSNet.Json.Tests
         [Fact]
         public void Test_Uninitialized_Object()
         {
-            var jsonStr = "{\"Grade\":\"大学一年级\",\"Major\":\"软件工程\",\"ZhName\":\"爱德华*王\",\"EnName\":\"Edward Wang\",\"Age\":20,\"Remark\":\"我是一个学生\"}";
+            var jsonStr = "{\"Grade\":\"大学一年级\",\"Major\":\"软件工程\",\"ZhName\":\"爱德华*王\",\"EnName\":\"Edward Wang\",\"Age\":20,\"Gender\":0,\"Remark\":\"我是一个学生\"}";
 
             var serializer = new SystemTextJsonSerializer(new JsonSerializerOptions()
             {
@@ -154,7 +161,7 @@ namespace GSNet.Json.Tests
         [Fact]
         public void Test_Property_Private_Set()
         {
-            var jsonStr = "{\"Grade\":\"大学一年级\",\"Major\":\"软件工程\",\"ZhName\":\"爱德华*王\",\"EnName\":\"Edward Wang\",\"Age\":20,\"Remark\":\"我是一个学生\"}";
+            var jsonStr = "{\"Grade\":\"大学一年级\",\"Major\":\"软件工程\",\"ZhName\":\"爱德华*王\",\"EnName\":\"Edward Wang\",\"Age\":20,\"Gender\":0,\"Remark\":\"我是一个学生\"}";
 
             var serializer = new SystemTextJsonSerializer(new JsonSerializerOptions()
             {
@@ -176,5 +183,133 @@ namespace GSNet.Json.Tests
             Assert.NotNull(objFromJson.Major);
         }
 
+        /// <summary>
+        /// 测试多态类型序列化
+        /// </summary>
+        [Fact]
+        public void Test_Polymorphism_Type()
+        {
+            var persons = new List<Person>()
+            {
+                new Person()
+                {
+                    ZhName = "爱德华",
+                    EnName = "Edward",
+                    Age = 18,
+                    Gender = Gender.Male,
+                },
+                new Student("大学一年级", "软件工程")
+                {
+                    ZhName = "汤姆",
+                    EnName = "Tom",
+                    Age = 20,
+                    Gender = Gender.Male,
+                },
+                new Teacher()
+                {
+                    ZhName = "丽萨",
+                    EnName = "Lisa",
+                    Age = 34,
+                    Gender = Gender.Female,
+                    Schools = new List<string>()
+                    {
+                        "清华大学", "北京大学"
+                    },
+                    ProfessionalTitle = "资深教师"
+                }
+            };
+
+            var typeInfoResolver = new DefaultJsonTypeInfoResolver
+            {
+                Modifiers =
+                {
+                    new ParameterlessConstructorModifier().ModifyJsonTypeInfo,
+                    new PropertiesWithPrivateSetModifier().ModifyJsonTypeInfo,
+                    new IgnorePropertiesModifier()
+                        //忽略备注
+                        .AddIgnoreProperty<Person>(x => x.Remark)
+                        .ModifyJsonTypeInfo
+                }
+            };
+
+            var option = new JsonSerializerOptions()
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                Converters = { new JsonStringEnumConverter() },
+                TypeInfoResolver = new DefaultJsonTypeInfoResolver()
+                {
+                    Modifiers = {
+                        new ParameterlessConstructorModifier().ModifyJsonTypeInfo,
+                        new PropertiesWithPrivateSetModifier().ModifyJsonTypeInfo,
+                        new IgnorePropertiesModifier()
+                            //忽略备注
+                            .AddIgnoreProperty<Person>(x => x.Remark)
+                            .ModifyJsonTypeInfo
+                    }
+                }
+            };
+
+            var serializer = new SystemTextJsonSerializer(option);
+
+            var jsonStr = serializer.SerializeObject(persons);
+
+            Assert.NotEmpty(jsonStr);
+            Assert.DoesNotContain(nameof(Teacher.ProfessionalTitle), jsonStr);
+            Assert.DoesNotContain(nameof(Teacher.Schools), jsonStr);
+            Assert.DoesNotContain(nameof(Student.Grade), jsonStr);
+            Assert.DoesNotContain(nameof(Student.Major), jsonStr);
+            
+            _outputHelper.WriteLine($"JSON:{jsonStr}");
+
+            option = new JsonSerializerOptions()
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                Converters = { new JsonStringEnumConverter() },
+                TypeInfoResolver = new DefaultJsonTypeInfoResolver()
+                {
+                    Modifiers = {
+                        new ParameterlessConstructorModifier().ModifyJsonTypeInfo,
+                        new PropertiesWithPrivateSetModifier().ModifyJsonTypeInfo,
+                        new IgnorePropertiesModifier()
+                            //忽略备注
+                            .AddIgnoreProperty<Person>(x => x.Remark)
+                            .ModifyJsonTypeInfo,
+                        //配置多态
+                        new PolymorphismTypeModifier()
+                            .ConfigPolymorphism<Person>(new List<JsonDerivedType>()
+                            {
+                                new JsonDerivedType(typeof(Person), nameof(Person)), //可以不配置
+                                new JsonDerivedType(typeof(Student), nameof(Student)),
+                                new JsonDerivedType(typeof(Teacher), nameof(Teacher))
+                            }, "PersonType")
+                            .ModifyJsonTypeInfo
+                    }
+                }
+            };
+
+            serializer = new SystemTextJsonSerializer(option);
+            
+            jsonStr = serializer.SerializeObject(persons);
+
+            Assert.NotEmpty(jsonStr);
+            Assert.Contains(nameof(Teacher.ProfessionalTitle), jsonStr);
+            Assert.Contains(nameof(Teacher.Schools), jsonStr);
+            Assert.Contains(nameof(Student.Grade), jsonStr);
+            Assert.Contains(nameof(Student.Major), jsonStr);
+
+            _outputHelper.WriteLine($"JSON:{jsonStr}");
+
+            var objFromJson = serializer.Deserialize<IList<Person>>(jsonStr);
+
+            Assert.NotNull(objFromJson);
+            Assert.Equal(3, objFromJson.Count());
+            Assert.True(objFromJson[1] is Student);
+            Assert.True(objFromJson[2] is Teacher);
+            Assert.Equal((persons[1] as Student)!.Grade, (objFromJson[1] as Student)!.Grade);
+            Assert.Equal((persons[1] as Student)!.Major, (objFromJson[1] as Student)!.Major);
+            Assert.Equal((persons[2] as Teacher)!.ProfessionalTitle, (objFromJson[2] as Teacher)!.ProfessionalTitle);
+            Assert.Contains("清华大学", (objFromJson[2] as Teacher)!.Schools);
+            Assert.Contains("北京大学", (objFromJson[2] as Teacher)!.Schools);
+        }
     }
 }
