@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
+using GSNet.Common.Helper;
 
 namespace GSNet.Json.SystemTextJson.Modifiers
 {
@@ -43,7 +44,7 @@ namespace GSNet.Json.SystemTextJson.Modifiers
         /// <param name="destinationMemberLambdaExpression">指向其属性成员的Lambda表达式</param>
         public IgnorePropertiesModifier AddIgnoreProperty<TDestination>(Expression<Func<TDestination, object>> destinationMemberLambdaExpression)
         {
-            var pInfo = GetPropertyInfo(destinationMemberLambdaExpression);
+            var pInfo = ExpressionHelper.GetMemberInfo(destinationMemberLambdaExpression);
 
             if (_typeIgnorePropertiesDict.ContainsKey(typeof(TDestination)))
             {
@@ -80,33 +81,6 @@ namespace GSNet.Json.SystemTextJson.Modifiers
             return this;
         }
 
-        /// <summary>
-        /// 通过lambdaExpression获取属性PropertyInfo
-        /// </summary>
-        private PropertyInfo GetPropertyInfo<TDestination>(Expression<Func<TDestination, object>> destinationMemberLambdaExpression)
-        {
-            //获取LambdaExpression 的主体 如x => x.b  则获取到 x.b
-            var lambdaExpressionBody = ((LambdaExpression)destinationMemberLambdaExpression).Body;
-            // x.b 属于 MemberExpression 或者 UnaryExpression 
-
-            if (lambdaExpressionBody is MemberExpression expression)
-            {
-                //获取Member , 这里不做具体校验，所以调用配置必须是 属性 
-                var memberInfo = expression.Member;
-                var pInfo = (PropertyInfo)memberInfo;
-
-                return pInfo;
-            }
-            else
-            {
-                var unaryExpression = ((UnaryExpression)lambdaExpressionBody);
-
-                var memberExpression = unaryExpression.Operand as MemberExpression;
-                var memberInfo = memberExpression.Member;
-                var pInfo = (PropertyInfo)memberInfo;
-
-                return pInfo;
-            }
-        }
+       
     }
 }
