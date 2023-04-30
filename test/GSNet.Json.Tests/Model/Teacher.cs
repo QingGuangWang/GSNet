@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#if NewtonsoftJson
+namespace GSNet.Json.NewtonsoftJson.Tests.Model
+#else
 namespace GSNet.Json.Tests.Model
+#endif
 {
     /// <summary>
     /// 教师

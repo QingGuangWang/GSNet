@@ -1,4 +1,8 @@
-﻿using GSNet.Json.Tests.Model.Enums;
+﻿#if NewtonsoftJson
+using GSNet.Json.NewtonsoftJson.Tests.Model.Enums;
+#else
+using  GSNet.Json.Tests.Model.Enums;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +10,11 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
+#if NewtonsoftJson
+namespace GSNet.Json.NewtonsoftJson.Tests.Model
+#else
 namespace GSNet.Json.Tests.Model
+#endif
 {
     /// <summary>
     /// 表示人

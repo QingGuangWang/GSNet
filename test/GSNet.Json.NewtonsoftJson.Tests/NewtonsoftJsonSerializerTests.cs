@@ -1,78 +1,79 @@
 using GSNet.Json.SystemTextJson;
 using System.Text.Json;
-using GSNet.Json.Tests.Model;
+using GSNet.Json.NewtonsoftJson.Tests.Model;
+using GSNet.Json.NewtonsoftJson.Tests.Model.Enums;
 using Xunit.Abstractions;
 using System.Text;
 using GSNet.Common.Extensions;
-using GSNet.Json.Tests.Model.Enums;
 
-namespace GSNet.Json.Tests
+namespace GSNet.Json.NewtonsoftJson.Tests
 {
     /// <summary>
-    /// æµ‹è¯•SystemTextJsonConverter
+    /// ²âÊÔ NewtonsoftJsonSerializer
     /// </summary>
-    public class SystemTextJsonConverterTests
+    public class NewtonsoftJsonSerializerTests
     {
         private readonly ITestOutputHelper _outputHelper;
 
         private readonly IJsonSerializer _jsonSerializer;
 
-        /// <summary>
-        /// éœ€è¦åºåˆ—åŒ–çš„å¯¹è±¡
-        /// </summary>
-        private readonly Person _person= new Person()
-        {
-            ZhName = "çˆ±å¾·å*ç‹",
-            EnName = "Edward Wang",
-            Age = 18,
-            Gender = Gender.Male,
-            Remark = "æˆ‘æ˜¯ä¸€ä¸ªå­¦ç”Ÿ"
-        };
-
-        /// <summary>
-        /// é¢„æœŸçš„JSONå­—ç¬¦ä¸²
-        /// </summary>
-        private const string ExpectedJsonStr = "{\"ZhName\":\"\\u7231\\u5FB7\\u534E*\\u738B\",\"EnName\":\"Edward Wang\"," +
-                                               "\"Age\":18,\"Gender\":0,\"Remark\":\"\\u6211\\u662F\\u4E00\\u4E2A\\u5B66\\u751F\"}";
-
-        public SystemTextJsonConverterTests(ITestOutputHelper outputHelper)
+        public NewtonsoftJsonSerializerTests(ITestOutputHelper outputHelper)
         {
             _outputHelper = outputHelper;
-            _jsonSerializer = new SystemTextJsonSerializer(new JsonSerializerOptions());
+            _jsonSerializer = new NewtonsoftJsonSerializer();
         }
 
         /// <summary>
-        /// æµ‹è¯• <see cref="IJsonSerializer.Serialize{T}"/> æ–¹æ³•
+        /// ĞèÒªĞòÁĞ»¯µÄ¶ÔÏó
+        /// </summary>
+        private readonly Person _person = new Person()
+        {
+            ZhName = "½Ü¶û·ò",
+            EnName = "Zeref",
+            Age = 400,
+            Gender = Gender.Male,
+            Remark = "ºÚÄ§µ¼Ê¿µÄÊ¼×æ"
+        };
+
+        /// <summary>
+        /// Ô¤ÆÚµÄJSON×Ö·û´®
+        /// </summary>
+        private const string ExpectedJsonStr = "{\"ZhName\":\"½Ü¶û·ò\",\"EnName\":\"Zeref\",\"Age\":400,\"Gender\":0,\"Remark\":\"ºÚÄ§µ¼Ê¿µÄÊ¼×æ\"}";
+
+        /// <summary>
+        /// ²âÊÔ <see cref="IJsonSerializer.Serialize{T}"/> ·½·¨
         /// </summary>
         [Fact]
         public void Test_Serialize()
         {
             var jsonStr = _jsonSerializer.Serialize(_person);
 
+            _outputHelper.WriteLine(jsonStr);
+
             Assert.NotEmpty(jsonStr);
             Assert.Equal(ExpectedJsonStr, jsonStr);
         }
 
         /// <summary>
-        /// æµ‹è¯• <see cref="IJsonSerializer.SerializeObject"/> æ–¹æ³•
+        /// ²âÊÔ <see cref="IJsonSerializer.SerializeObject"/> ·½·¨
         /// </summary>
         [Fact]
         public void Test_SerializeObject()
         {
             var jsonStr = _jsonSerializer.SerializeObject(_person);
-            
+
             Assert.NotEmpty(jsonStr);
             Assert.Equal(ExpectedJsonStr, jsonStr);
         }
 
         /// <summary>
-        /// æµ‹è¯• <see cref="IJsonSerializer.SerializeToStream(Object,Stream)"/> æ–¹æ³•
+        /// ²âÊÔ <see cref="IJsonSerializer.SerializeToStream(Object,Stream)"/> ·½·¨
         /// </summary>
         [Fact]
         public void Test_SerializeToStream()
         {
-            var memoryStream = new MemoryStream(); 
-            
+            var memoryStream = new MemoryStream();
+
             _jsonSerializer.SerializeToStream(_person, memoryStream);
 
             var bytes = memoryStream.ToArray();
@@ -83,7 +84,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// æµ‹è¯• <see cref="IJsonSerializer.SerializeToStream(Type,Object,Stream)"/> æ–¹æ³•
+        /// ²âÊÔ <see cref="IJsonSerializer.SerializeToStream(Type,Object,Stream)"/> ·½·¨
         /// </summary>
         [Fact]
         public void Test_SerializeToStream_Specific_Type()
@@ -98,9 +99,9 @@ namespace GSNet.Json.Tests
             Assert.NotEmpty(jsonStr);
             Assert.Equal(ExpectedJsonStr, jsonStr);
         }
-        
+
         /// <summary>
-        /// æµ‹è¯• <see cref="IJsonSerializer.Deserialize{T}"/> æ–¹æ³•
+        /// ²âÊÔ <see cref="IJsonSerializer.Deserialize{T}"/> ·½·¨
         /// </summary>
         [Fact]
         public void Test_Deserialize()
@@ -115,9 +116,10 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// æµ‹è¯• <see cref="IJsonSerializer.Deserialize(System.Type,string)"/> æ–¹æ³•
+        /// ²âÊÔ <see cref="IJsonSerializer.Deserialize(System.Type,string)"/> ·½·¨
         /// </summary>
-        [Fact] public void Test_Deserialize_Specific_Type()
+        [Fact]
+        public void Test_Deserialize_Specific_Type()
         {
             var obj = _jsonSerializer.Deserialize(typeof(Person), ExpectedJsonStr);
 
@@ -133,7 +135,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// æµ‹è¯• <see cref="IJsonSerializer.Deserialize(System.Type,Stream)"/> æ–¹æ³•
+        /// ²âÊÔ <see cref="IJsonSerializer.Deserialize(System.Type,Stream)"/> ·½·¨
         /// </summary>
         [Fact]
         public void Test_Deserialize_Specific_Type_From_Stream()
@@ -152,5 +154,6 @@ namespace GSNet.Json.Tests
             Assert.Equal(_person.Age, person.Age);
             Assert.Equal(_person.Remark, person.Remark);
         }
+
     }
 }

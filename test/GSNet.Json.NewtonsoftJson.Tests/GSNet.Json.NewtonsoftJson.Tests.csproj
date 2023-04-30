@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);NewtonsoftJson</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\GSNet.Json.Tests\Model\Enums\Gender.cs" Link="Model\Enums\Gender.cs" />
+    <Compile Include="..\GSNet.Json.Tests\Model\Person.cs" Link="Model\Person.cs" />
+    <Compile Include="..\GSNet.Json.Tests\Model\Project.cs" Link="Model\Project.cs" />
+    <Compile Include="..\GSNet.Json.Tests\Model\Student.cs" Link="Model\Student.cs" />
+    <Compile Include="..\GSNet.Json.Tests\Model\Teacher.cs" Link="Model\Teacher.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\Enums\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\GSNet.Json.NewtonsoftJson\GSNet.Json.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\..\src\GSNet.Json\GSNet.Json.csproj" />
+  </ItemGroup>
+
+</Project>
