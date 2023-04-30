@@ -3,6 +3,7 @@ using GSNet.Json.SystemTextJson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization.Metadata;
 using System.Text.Json;
@@ -50,11 +51,11 @@ namespace GSNet.Json.Tests
                     //使用IgnorePropertiesModifier来配置忽略的属性
                     Modifiers =
                     {
-                        new IgnorePropertiesModifier()
+                        new IgnorePropertyOrFieldModifier()
                             //忽略备注
-                            .AddIgnoreProperty<Person>(x => x.Remark)
+                            .AddIgnorePropertyOrField<Person>(x => x.Remark)
                             //忽略性别
-                            .AddIgnoreProperty(typeof(Person), nameof(Person.Gender))
+                            .AddIgnorePropertyOrField(typeof(Person), nameof(Person.Gender))
                             .ModifyJsonTypeInfo
                     }
                 }
@@ -74,6 +75,51 @@ namespace GSNet.Json.Tests
 
             Assert.NotNull(personFromJson);
             Assert.Null(personFromJson.Remark);
+        }
+
+        /// <summary>
+        /// 测试通过配置 自定义协定 来忽略属性的序列化
+        /// </summary>
+        [Fact]
+        public void Test_Custom_Property_Or_Field_Name()
+        {
+            var person = new Person()
+            {
+                ZhName = "爱德华*王",
+                EnName = "Edward Wang",
+                Age = 18,
+                Gender = Gender.Male,
+                Remark = "我是一个学生"
+            };
+
+            var serializer = new SystemTextJsonSerializer(new JsonSerializerOptions()
+            {
+                TypeInfoResolver = new DefaultJsonTypeInfoResolver
+                {
+                    //使用IgnorePropertiesModifier来配置忽略的属性
+                    Modifiers =
+                    {
+                        new CustomJsonPropertyOrFieldNameModifier()
+                            //配置属性 ZhName 序列化为 ChineseName
+                            .ConfigCustomPropertyOrFieldName<Person>(x => x.ZhName, "ChineseName")
+                            .ModifyJsonTypeInfo
+                    }
+                }
+            });
+
+            var jsonStr = serializer.SerializeObject(person);
+
+            Assert.NotEmpty(jsonStr);
+            Assert.DoesNotContain("ZhName", jsonStr);
+            Assert.Contains("ChineseName", jsonStr);
+
+            _outputHelper.WriteLine($"JSON:{jsonStr}");
+
+            var personFromJson = serializer.Deserialize<Person>(jsonStr);
+
+            Assert.NotNull(personFromJson);
+            Assert.NotNull(personFromJson.ZhName);
+            Assert.Equal(person.ZhName, personFromJson.ZhName);
         }
 
         /// <summary>
@@ -225,9 +271,9 @@ namespace GSNet.Json.Tests
                 {
                     new ParameterlessConstructorModifier().ModifyJsonTypeInfo,
                     new PropertiesWithPrivateSetModifier().ModifyJsonTypeInfo,
-                    new IgnorePropertiesModifier()
+                    new IgnorePropertyOrFieldModifier()
                         //忽略备注
-                        .AddIgnoreProperty<Person>(x => x.Remark)
+                        .AddIgnorePropertyOrField<Person>(x => x.Remark)
                         .ModifyJsonTypeInfo
                 }
             };
@@ -241,9 +287,9 @@ namespace GSNet.Json.Tests
                     Modifiers = {
                         new ParameterlessConstructorModifier().ModifyJsonTypeInfo,
                         new PropertiesWithPrivateSetModifier().ModifyJsonTypeInfo,
-                        new IgnorePropertiesModifier()
+                        new IgnorePropertyOrFieldModifier()
                             //忽略备注
-                            .AddIgnoreProperty<Person>(x => x.Remark)
+                            .AddIgnorePropertyOrField<Person>(x => x.Remark)
                             .ModifyJsonTypeInfo
                     }
                 }
@@ -270,9 +316,9 @@ namespace GSNet.Json.Tests
                     Modifiers = {
                         new ParameterlessConstructorModifier().ModifyJsonTypeInfo,
                         new PropertiesWithPrivateSetModifier().ModifyJsonTypeInfo,
-                        new IgnorePropertiesModifier()
+                        new IgnorePropertyOrFieldModifier()
                             //忽略备注
-                            .AddIgnoreProperty<Person>(x => x.Remark)
+                            .AddIgnorePropertyOrField<Person>(x => x.Remark)
                             .ModifyJsonTypeInfo,
                         //配置多态
                         new PolymorphismTypeModifier()

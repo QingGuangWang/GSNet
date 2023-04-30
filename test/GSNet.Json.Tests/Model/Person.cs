@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GSNet.Json.Tests.Model
@@ -36,5 +37,6 @@ namespace GSNet.Json.Tests.Model
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+
     }
 }

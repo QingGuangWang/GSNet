@@ -306,5 +306,18 @@ namespace GSNet.Common.Extensions
 
             return constructorInfo != null;
         }
+
+        /// <summary>
+        /// 从当前指定类型（参数 <paramref name="type"/>），获取指定的名称（参数：<paramref name="name"/>）的属性或者字段。
+        /// </summary>
+        /// <param name="type">当前类型</param>
+        /// <param name="name">属性或者字段的名称</param>
+        /// <returns>MemberInfo对象</returns>
+        public static MemberInfo GetPublicPropertyOrField(this Type type, string name)
+        {
+            var propertyInfo = type.GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
+
+            return propertyInfo != null ? propertyInfo : type.GetField(name, BindingFlags.Instance | BindingFlags.Public);
+        }
     }
 }
