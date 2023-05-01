@@ -16,34 +16,23 @@ namespace GSNet.Json.SystemTextJson.Modifiers
     /// </summary>
     public class CustomJsonPropertyOrFieldNameModifier : IJsonTypeInfoModifier
     {
-        private readonly IDictionary<Type, IList<Tuple<MemberInfo, string>>> _customPropertyNameDictionary = new Dictionary<Type, IList<Tuple<MemberInfo, string>>>();
+        private readonly IList<Tuple<MemberOptions, string>> _customPropertyNameList = new List<Tuple<MemberOptions, string>>();
         
         public void ModifyJsonTypeInfo(JsonTypeInfo jsonTypeInfo)
         {
             if (jsonTypeInfo.Kind != JsonTypeInfoKind.Object)
                 return;
 
-            //判断是否定义序列化/反序列化的名称
-            if (_customPropertyNameDictionary.TryGetValue(jsonTypeInfo.Type, out var customPropertyNameTuples))
+            foreach (var propertyInfo in jsonTypeInfo.Properties)
             {
-                foreach (var customPropertyNameTuple in customPropertyNameTuples)
+                //正常情况下AttributeProvider都是MemberInfo，除非用jsonTypeInfo.CreateJsonPropertyInfo等方式自己定义的
+                if (propertyInfo.AttributeProvider is MemberInfo attributeProvider)
                 {
-                    var memberInfo = customPropertyNameTuple.Item1;
+                    var customNameTuple = _customPropertyNameList.FirstOrDefault(x => x.Item1.IsMatchTarget(attributeProvider, jsonTypeInfo.Type));
 
-                    var propertyInfo = jsonTypeInfo.Properties.FirstOrDefault(x =>
+                    if (customNameTuple != null)
                     {
-                        //正常情况下AttributeProvider都是MemberInfo，除非用jsonTypeInfo.CreateJsonPropertyInfo等方式自己定义的
-                        if (x.AttributeProvider is MemberInfo attributeProvider)
-                        {
-                            return attributeProvider.Name == memberInfo.Name;
-                        }
-
-                        return false;
-                    });
-                    
-                    if (propertyInfo != null)
-                    {
-                        propertyInfo.Name = customPropertyNameTuple.Item2;
+                        propertyInfo.Name = customNameTuple.Item2;
                     }
                 }
             }
@@ -54,21 +43,16 @@ namespace GSNet.Json.SystemTextJson.Modifiers
         /// </summary>
         /// <typeparam name="TDestination">序列化/反序列化的对象</typeparam>
         /// <param name="destinationMemberLambdaExpression">指向其成员的Lambda表达式</param>
-        /// <param name="name"></param>
+        /// <param name="name">新名称</param>
+        /// <param name="effectiveForSubclasses">是否对序列化/反序列化的类型（<typeparamref name="TDestination"/>）的子类都生效， 默认是true</param>
+        /// <param name="effectiveForHideInheritedMember">当<paramref name="effectiveForSubclasses"/>为true的时候，该参数才有作用。是否作用于隐藏继承成员（子类的属性使用new修饰符）， 默认是false</param>
         /// <returns></returns>
         public CustomJsonPropertyOrFieldNameModifier ConfigCustomPropertyOrFieldName<TDestination>(
-            Expression<Func<TDestination, object>> destinationMemberLambdaExpression, string name)
+            Expression<Func<TDestination, object>> destinationMemberLambdaExpression, string name, bool effectiveForSubclasses = true, bool effectiveForHideInheritedMember = false)
         {
             var memberInfo = ExpressionHelper.GetMemberInfo(destinationMemberLambdaExpression);
 
-            if (_customPropertyNameDictionary.ContainsKey(typeof(TDestination)))
-            {
-                _customPropertyNameDictionary[typeof(TDestination)].Add(new Tuple<MemberInfo, string>(memberInfo, name));
-            }
-            else
-            {
-                _customPropertyNameDictionary.Add(typeof(TDestination), new List<Tuple<MemberInfo, string>>() { new Tuple<MemberInfo, string>(memberInfo, name) });
-            }
+            _customPropertyNameList.Add(new Tuple<MemberOptions, string>(new MemberOptions(memberInfo, typeof(TDestination), effectiveForSubclasses, effectiveForHideInheritedMember), name));
 
             return this;
         }

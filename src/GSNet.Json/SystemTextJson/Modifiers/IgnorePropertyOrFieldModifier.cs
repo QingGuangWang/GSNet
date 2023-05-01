@@ -16,51 +16,42 @@ namespace GSNet.Json.SystemTextJson.Modifiers
     /// </summary>
     public class IgnorePropertyOrFieldModifier : IJsonTypeInfoModifier
     {
-        private readonly IDictionary<Type, IList<string>> _typeIgnoreNameDict = new Dictionary<Type, IList<string>>();
+        private readonly IDictionary<Type, HashSet<string>> _typeIgnoreNameDict = new Dictionary<Type, HashSet<string>>();
 
-        private readonly IDictionary<Type, IList<MemberInfo>> _typeIgnoreMemberDict = new Dictionary<Type, IList<MemberInfo>>(); 
-        
+        private readonly IList<MemberOptions> _memberIgnoreOptionsList = new List<MemberOptions>();
+
         public void ModifyJsonTypeInfo(JsonTypeInfo jsonTypeInfo)
         {
             if (jsonTypeInfo.Kind != JsonTypeInfoKind.Object)
                 return;
 
-            //根据属性或者字段去忽略
-            if (_typeIgnoreMemberDict.TryGetValue(jsonTypeInfo.Type, out var memberInfos))
+            //查询出所有需要被忽略的属性
+            var propertyInfosNeedIgnore = jsonTypeInfo.Properties.Where(x =>
             {
-                foreach (var memberInfo in memberInfos)
+                //正常情况下AttributeProvider都是MemberInfo，除非用jsonTypeInfo.CreateJsonPropertyInfo等方式自己定义的
+                if (x.AttributeProvider is MemberInfo attributeProvider)
                 {
-                    var propertyInfo = jsonTypeInfo.Properties.FirstOrDefault(x =>
+                    return _memberIgnoreOptionsList.Any(y => y.IsMatchTarget(attributeProvider, jsonTypeInfo.Type));
+                }
+                else
+                {
+                    //根据JSON字段名称去忽略
+                    if (_typeIgnoreNameDict.TryGetValue(jsonTypeInfo.Type, out var ignoreNames))
                     {
-                        //正常情况下AttributeProvider都是MemberInfo，除非用jsonTypeInfo.CreateJsonPropertyInfo等方式自己定义的
-                        if (x.AttributeProvider is MemberInfo attributeProvider)
-                        {
-                            return attributeProvider.Name == memberInfo.Name;
-                        }
+                        return ignoreNames.Contains(x.Name);
 
-                        return false;
-                    });
-
-                    if (propertyInfo != null)
-                    {
-                        jsonTypeInfo.Properties.Remove(propertyInfo);
                     }
                 }
-            }
 
-            //根据JSON字段名称去忽略
-            if (_typeIgnoreNameDict.TryGetValue(jsonTypeInfo.Type, out var ignoreProperties))
+                return false;
+            }).ToList();
+
+            //移除需要忽略的
+            foreach (var propertyInfo in propertyInfosNeedIgnore)
             {
-                foreach (var ignorePropertyName in ignoreProperties)
-                {
-                    var propertyInfo = jsonTypeInfo.Properties.FirstOrDefault(x => x.Name == ignorePropertyName);
-
-                    if (propertyInfo != null)
-                    {
-                        jsonTypeInfo.Properties.Remove(propertyInfo);
-                    }
-                }
+                jsonTypeInfo.Properties.Remove(propertyInfo);
             }
+
         }
 
         /// <summary>
@@ -68,18 +59,13 @@ namespace GSNet.Json.SystemTextJson.Modifiers
         /// </summary>
         /// <typeparam name="TDestination">序列化/反序列化的类型</typeparam>
         /// <param name="destinationMemberLambdaExpression">指向其属性成员的Lambda表达式</param>
-        public IgnorePropertyOrFieldModifier AddIgnorePropertyOrField<TDestination>(Expression<Func<TDestination, object>> destinationMemberLambdaExpression)
+        /// <param name="effectiveForSubclasses">是否对序列化/反序列化的类型（<typeparamref name="TDestination"/>）的子类都生效， 默认是true</param>
+        /// <param name="effectiveForHideInheritedMember">当<paramref name="effectiveForSubclasses"/>为true的时候，该参数才有作用。是否作用于隐藏继承成员（子类的属性使用new修饰符）， 默认是false</param>
+        public IgnorePropertyOrFieldModifier AddIgnorePropertyOrField<TDestination>(Expression<Func<TDestination, object>> destinationMemberLambdaExpression, bool effectiveForSubclasses = true, bool effectiveForHideInheritedMember = false)
         {
             var memberInfo = ExpressionHelper.GetMemberInfo(destinationMemberLambdaExpression);
 
-            if (_typeIgnoreMemberDict.ContainsKey(typeof(TDestination)))
-            {
-                _typeIgnoreMemberDict[typeof(TDestination)].Add(memberInfo);
-            }
-            else
-            {
-                _typeIgnoreMemberDict.Add(typeof(TDestination), new List<MemberInfo>() { memberInfo });
-            }
+            _memberIgnoreOptionsList.Add(new MemberOptions(memberInfo, typeof(TDestination), effectiveForSubclasses, effectiveForHideInheritedMember));
 
             return this;
         }
@@ -89,8 +75,10 @@ namespace GSNet.Json.SystemTextJson.Modifiers
         /// </summary>
         /// <param name="type">序列化/反序列化的类型</param>
         /// <param name="memberName">属性/字段名称</param>
+        /// <param name="effectiveForSubclasses">是否对序列化/反序列化的类型（<paramref name="type"/>）的子类都生效， 默认是true</param>
+        /// <param name="effectiveForHideInheritedMember">当<paramref name="effectiveForSubclasses"/>为true的时候，该参数才有作用。是否作用于隐藏继承成员（子类的属性使用new修饰符）， 默认是false</param>
         /// <returns></returns>
-        public IgnorePropertyOrFieldModifier AddIgnorePropertyOrField(Type type, string memberName)
+        public IgnorePropertyOrFieldModifier AddIgnorePropertyOrField(Type type, string memberName, bool effectiveForSubclasses = true, bool effectiveForHideInheritedMember = false)
         {
             var memberInfo = type.GetPublicPropertyOrField(memberName);
 
@@ -98,18 +86,8 @@ namespace GSNet.Json.SystemTextJson.Modifiers
             {
                 throw new ArgumentException($@"Cannot find property or field named [{memberName}] on [{type}]", nameof(memberName));
             }
-            
-            if (_typeIgnoreMemberDict.TryGetValue(type, out var memberInfos))
-            {
-                if (!memberInfos.Contains(memberInfo))
-                {
-                    memberInfos.Add(memberInfo);
-                }
-            }
-            else
-            {
-                _typeIgnoreMemberDict.Add(type, new List<MemberInfo>() { memberInfo });
-            }
+
+            _memberIgnoreOptionsList.Add(new MemberOptions(memberInfo, type, effectiveForSubclasses, effectiveForHideInheritedMember));
 
             return this;
         }
@@ -132,7 +110,7 @@ namespace GSNet.Json.SystemTextJson.Modifiers
             }
             else
             {
-                _typeIgnoreNameDict.Add(type, new List<string>() { name });
+                _typeIgnoreNameDict.Add(type, new HashSet<string>() { name });
             }
 
             return this;

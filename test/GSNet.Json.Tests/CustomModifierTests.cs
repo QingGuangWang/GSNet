@@ -78,7 +78,7 @@ namespace GSNet.Json.Tests
         }
 
         /// <summary>
-        /// 测试通过配置 自定义协定 来忽略属性的序列化
+        /// 测试通过配置 自定义协定 来定义属性的序列化名称
         /// </summary>
         [Fact]
         public void Test_Custom_Property_Or_Field_Name()
