@@ -243,8 +243,29 @@ namespace GSNet.Common.Helper
                     defaultTimeZone = TimeZoneName.ChinaStandardTime;
                 }
 
-                //指定时区
-                var timeZone = TZConvert.GetTimeZoneInfo(defaultTimeZone);
+                //指定时区  TZConvert.GetTimeZoneInfo(defaultTimeZone);
+                var timeZone = TimeZoneInfo.FindSystemTimeZoneById(defaultTimeZone);
+                
+                return TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(timeStr), timeZone);
+            }
+        }
+
+        /// <summary>
+        /// 解析日期时间，且转换时间为对应 UTC时间
+        /// 如果给定的时间字符串(参数 <paramref name="timeStr"/>) 并不是一个标准的ISO Data格式（如: 2020-12-01T12:22:43+0800, 2020-12-01T12:22:43Z 等），
+        /// 无法获取时间偏移量的，则可以通过指定的日期时间字符串所对应的时区(参数 <paramref name="timeStr"/>，默认值是中国东八区时间  <see cref="TimeZoneName.ChinaStandardTime"/> ) 来进行计算。
+        /// </summary>
+        /// <param name="timeStr">待转换的时间</param>
+        /// <param name="timeZone">非ISO Data格式的时间时，默认时间的时区</param>
+        public static DateTime ParseAndConvertTimeToUtc(string timeStr, TimeZoneInfo timeZone)
+        {
+            //如果符合ISO格式的日期时间格式
+            if (CommonRegex.ISODateRegex.IsMatch(timeStr))
+            {
+                return DateTime.Parse(timeStr).ToUniversalTime();
+            }
+            else
+            {
                 return TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(timeStr), timeZone);
             }
         }

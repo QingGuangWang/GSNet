@@ -133,10 +133,10 @@ namespace GSNet.Common.Helper
 
             for (int i = 0; i < sources.Count; i++)
             {
-                float matchValue = CalcStringSimilarity(t, target);
+                float matchValue = CalcStringSimilarity(sources[i], target);
                 if (matchValue >= acceptableSimilarity)
                 {
-                    keywords.Add(t, matchValue);
+                    keywords.Add(sources[i], matchValue);
                 }
             }
 
