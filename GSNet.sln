@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.RateLimiter.Redis", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.Redis.StackExchange", "src\GSNet.Redis.StackExchange\GSNet.Redis.StackExchange.csproj", "{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.RateLimiter.Tests", "test\GSNet.RateLimiter.Tests\GSNet.RateLimiter.Tests.csproj", "{E4A68AAC-0AFD-4EE1-A47E-391C5D452979}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4A68AAC-0AFD-4EE1-A47E-391C5D452979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4A68AAC-0AFD-4EE1-A47E-391C5D452979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4A68AAC-0AFD-4EE1-A47E-391C5D452979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4A68AAC-0AFD-4EE1-A47E-391C5D452979}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{3ED688CC-2424-4764-B301-6F5DDA2A78B3} = {392995CF-2EEE-4418-81F8-F4DE0AD8355A}
 		{A19A54E2-8081-486C-A22C-05C6D12246EF} = {392995CF-2EEE-4418-81F8-F4DE0AD8355A}
 		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811} = {392995CF-2EEE-4418-81F8-F4DE0AD8355A}
+		{E4A68AAC-0AFD-4EE1-A47E-391C5D452979} = {F2CC88DF-51B4-4663-94F4-286B8B8E0166}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2660B47-D99F-4A5A-B728-EDFDD7E934F5}
