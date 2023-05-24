@@ -11,11 +11,11 @@ namespace GSNet.Common.Extensions
     /// </summary>
     public static class DateTimeExtensions
     {
-        private static readonly string YMD_FORMAT = "yyyy-MM-dd";
+        private static readonly string YMDFormat = "yyyy-MM-dd";
 
-        private static readonly string YMDHM_FORMAT = "yyyy-MM-dd HH:mm";
+        private static readonly string YMDHMFormat = "yyyy-MM-dd HH:mm";
 
-        private static readonly string YMDHMS_FORMAT = "yyyy-MM-dd HH:mm:ss";
+        private static readonly string YMDHMSFormat = "yyyy-MM-dd HH:mm:ss";
 
         /// <summary>
         /// 清除时间，只保留日期
@@ -68,7 +68,7 @@ namespace GSNet.Common.Extensions
         /// <returns>格式化后输出的日期字符串</returns>
         public static string ToStringWithYMDFormat(this DateTime date)
         {
-            return date.ToString(YMD_FORMAT);
+            return date.ToString(YMDFormat);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace GSNet.Common.Extensions
         /// <returns>格式化后输出的日期字符串</returns>
         public static string ToStringWithYMDHMFormat(this DateTime date)
         {
-            return date.ToString(YMDHM_FORMAT);
+            return date.ToString(YMDHMFormat);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace GSNet.Common.Extensions
         /// <returns>格式化后输出的日期字符串</returns>
         public static string ToStringWithYMDHMSFormat(this DateTime date)
         {
-            return date.ToString(YMDHMS_FORMAT);
+            return date.ToString(YMDHMSFormat);
         }
     }
 }

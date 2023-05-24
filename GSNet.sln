@@ -25,7 +25,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{F2CC88DF-5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSNet.Json.Tests", "test\GSNet.Json.Tests\GSNet.Json.Tests.csproj", "{60297681-F3AB-44B6-88A8-8275BB897E8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.Json.NewtonsoftJson.Tests", "test\GSNet.Json.NewtonsoftJson.Tests\GSNet.Json.NewtonsoftJson.Tests.csproj", "{842CCAC0-D0F0-4287-A335-DB526FBFE392}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSNet.Json.NewtonsoftJson.Tests", "test\GSNet.Json.NewtonsoftJson.Tests\GSNet.Json.NewtonsoftJson.Tests.csproj", "{842CCAC0-D0F0-4287-A335-DB526FBFE392}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{34DD0D9B-A920-4316-8784-AFF51671017A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.Domain", "src\GSNet.Domain\GSNet.Domain.csproj", "{CB1D3EDC-E49E-4D1C-BD45-252838787ACE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,10 @@ Global
 		{842CCAC0-D0F0-4287-A335-DB526FBFE392}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{842CCAC0-D0F0-4287-A335-DB526FBFE392}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{842CCAC0-D0F0-4287-A335-DB526FBFE392}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB1D3EDC-E49E-4D1C-BD45-252838787ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB1D3EDC-E49E-4D1C-BD45-252838787ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB1D3EDC-E49E-4D1C-BD45-252838787ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB1D3EDC-E49E-4D1C-BD45-252838787ACE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +72,8 @@ Global
 		{B7103900-3C4D-42CC-BA48-06A774937338} = {392995CF-2EEE-4418-81F8-F4DE0AD8355A}
 		{60297681-F3AB-44B6-88A8-8275BB897E8A} = {F2CC88DF-51B4-4663-94F4-286B8B8E0166}
 		{842CCAC0-D0F0-4287-A335-DB526FBFE392} = {F2CC88DF-51B4-4663-94F4-286B8B8E0166}
+		{34DD0D9B-A920-4316-8784-AFF51671017A} = {2803B780-7AD4-4042-9A94-7073F7F69B0F}
+		{CB1D3EDC-E49E-4D1C-BD45-252838787ACE} = {34DD0D9B-A920-4316-8784-AFF51671017A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2660B47-D99F-4A5A-B728-EDFDD7E934F5}
