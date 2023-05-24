@@ -33,6 +33,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSNet.Domain", "src\GSNet.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.RateLimiter", "src\GSNet.RateLimiter\GSNet.RateLimiter.csproj", "{3ED688CC-2424-4764-B301-6F5DDA2A78B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.RateLimiter.Redis", "src\GSNet.RateLimiter.Redis\GSNet.RateLimiter.Redis.csproj", "{A19A54E2-8081-486C-A22C-05C6D12246EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSNet.Redis.StackExchange", "src\GSNet.Redis.StackExchange\GSNet.Redis.StackExchange.csproj", "{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +71,14 @@ Global
 		{3ED688CC-2424-4764-B301-6F5DDA2A78B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ED688CC-2424-4764-B301-6F5DDA2A78B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ED688CC-2424-4764-B301-6F5DDA2A78B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A19A54E2-8081-486C-A22C-05C6D12246EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A19A54E2-8081-486C-A22C-05C6D12246EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A19A54E2-8081-486C-A22C-05C6D12246EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A19A54E2-8081-486C-A22C-05C6D12246EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +93,8 @@ Global
 		{34DD0D9B-A920-4316-8784-AFF51671017A} = {2803B780-7AD4-4042-9A94-7073F7F69B0F}
 		{CB1D3EDC-E49E-4D1C-BD45-252838787ACE} = {34DD0D9B-A920-4316-8784-AFF51671017A}
 		{3ED688CC-2424-4764-B301-6F5DDA2A78B3} = {392995CF-2EEE-4418-81F8-F4DE0AD8355A}
+		{A19A54E2-8081-486C-A22C-05C6D12246EF} = {392995CF-2EEE-4418-81F8-F4DE0AD8355A}
+		{C590F4C3-A3B9-41F1-A4F0-F9DED7A2B811} = {392995CF-2EEE-4418-81F8-F4DE0AD8355A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2660B47-D99F-4A5A-B728-EDFDD7E934F5}
